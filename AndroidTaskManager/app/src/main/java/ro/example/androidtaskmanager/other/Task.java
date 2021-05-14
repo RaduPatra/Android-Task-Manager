@@ -24,12 +24,15 @@ public class Task {
 
     public long dueTime;
 
+    public int taskPoints;
 
-    public Task(String taskName, @NonNull String taskDesc, boolean isDone, long dueTime) {
+
+    public Task(String taskName, @NonNull String taskDesc, boolean isDone, long dueTime, int taskPoints) {
         this.taskName = taskName;
         this.taskDesc = taskDesc;
         this.isDone = isDone;
         this.dueTime = dueTime;
+        this.taskPoints = taskPoints;
     }
 
     /*public String getTaskName() {
@@ -61,5 +64,9 @@ public class Task {
 
     public long getDueTime() {
         return dueTime;
+    }
+
+    public int getTaskPoints() {
+        return taskPoints;
     }
 }

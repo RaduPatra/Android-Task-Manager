@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+import ro.example.androidtaskmanager.database.DeleteTaskOperation;
 import ro.example.androidtaskmanager.database.GetAllTasksOperation;
 import ro.example.androidtaskmanager.database.InsertTaskOperation;
 import ro.example.androidtaskmanager.database.UpdateTaskOperation;
@@ -91,20 +92,8 @@ public class TasksFragment extends Fragment implements OnTaskClickListener, Task
     }
 
     public void insertTask() {
-        /*Task task1 = new Task(
-                "task1",
-                "task1desc"
-        );*/
 
-        /*
-        //String newTask = newTaskText.getText().toString();
-        String newTask = "new test";
-        Task task = new Task(newTask, "desc", false);
-        taskList.add(task);
-        adapter.notifyDataSetChanged();
-        Task[] taskList = new Task[]{task};
-        new InsertTaskOperation(this).execute(taskList);*/
-
+        //switch to add task fragment
         FragmentTransaction fragment = getFragmentManager().beginTransaction();
         fragment.replace(R.id.flFragment, new AddTaskFragment());
         fragment.addToBackStack(null);
@@ -133,8 +122,9 @@ public class TasksFragment extends Fragment implements OnTaskClickListener, Task
             taskList.clear();
             taskList.addAll(tasks);
             adapter.notifyDataSetChanged();
-        } else
-            Toast.makeText(getContext(), "fail", Toast.LENGTH_LONG).show();
+        } else {
+            //Toast.makeText(getContext(), "fail", Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
@@ -146,6 +136,11 @@ public class TasksFragment extends Fragment implements OnTaskClickListener, Task
     }
 
     @Override
+    public void deleteTasks(String result) {
+
+    }
+
+    @Override
     public void onCheckBoxClick(Task task, View view) {
         CheckBox clickedCheck = view.findViewById(R.id.checkBox);
         boolean isChecked = clickedCheck.isChecked();
@@ -154,5 +149,14 @@ public class TasksFragment extends Fragment implements OnTaskClickListener, Task
         //Log.d(task.toString(), "testupdate");
         //update task with check
         //Toast.makeText(getContext(), task.taskName + " check " + isChecked, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onDeleteTaskClick(Task task, View view) {
+        Task[] tasks = new Task[]{task};
+        taskList.remove(task);
+        adapter.notifyDataSetChanged();
+        new DeleteTaskOperation(this).execute(tasks);
+
     }
 }

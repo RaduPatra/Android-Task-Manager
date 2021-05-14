@@ -19,7 +19,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/taskName"
+                android:id="@+id/rewardText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -51,14 +51,37 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:text="TextView"
-                android:visibility="invisible"
                 android:textSize="20sp"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/taskName"
-                app:layout_constraintTop_toBottomOf="@+id/taskName"
+                app:layout_constraintStart_toStartOf="@+id/rewardText"
+                app:layout_constraintTop_toBottomOf="@+id/rewardText"
                 app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/priceText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:layout_marginEnd="4dp"
+                android:drawableLeft="@drawable/ic_money"
+                android:text="10"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toStartOf="@+id/deleteTaskBtn"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/deleteTaskBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.512"
+                app:srcCompat="@drawable/ic_baseline_delete_forever_24" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

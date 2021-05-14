@@ -13,4 +13,6 @@ public interface TaskOperations {
     void getAllTasks(List<Task> tasks);
 
     void updateTasks(String result);
+
+    void deleteTasks(String result);
 }

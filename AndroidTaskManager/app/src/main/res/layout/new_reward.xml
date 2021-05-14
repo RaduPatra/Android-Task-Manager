@@ -12,15 +12,28 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:ems="10"
+        android:hint="New reward"
         android:inputType="textPersonName"
-        android:text="Name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.144"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
+    <EditText
+        android:id="@+id/newRewardPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:inputType="numberSigned"
+        android:text="5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.144"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
     <Button
-        android:id="@+id/newTaskButton"
+        android:id="@+id/newRewardButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
@@ -30,21 +43,15 @@
         app:layout_constraintHorizontal_bias="0.95"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <TimePicker
-        android:id="@+id/timePicker"
-        android:layout_width="310dp"
-        android:layout_height="360dp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Task name:"
+        android:text="Reward name:"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.093"
@@ -55,47 +62,13 @@
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="12dp"
-        android:text="Add due time:"
+        android:layout_marginTop="20dp"
+        android:text="Reward price:"
         android:textSize="20sp"
-        app:layout_constraintStart_toEndOf="@+id/checkBoxDueTime"
-        app:layout_constraintTop_toBottomOf="@+id/taskPoints" />
-
-    <CheckBox
-        android:id="@+id/checkBoxDueTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="12dp"
-        android:gravity="center"
-        android:minWidth="0dp"
-        android:minHeight="0dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/taskPoints" />
-
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="12dp"
-        android:text="Task points:"
-        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/newRewardText" />
-
-    <EditText
-        android:id="@+id/taskPoints"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="8dp"
-        android:ems="10"
-        android:inputType="numberSigned"
-        android:text="5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -50,26 +51,25 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         return taskData.size();
     }
 
-    /*public void updateItems(List<Task> newList) {
-        taskData.clear();
-        taskData.addAll(newList);
-        this.notifyDataSetChanged();
-    }*/
-
     public static class TaskViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView name;
         // private final TextView desc;
         private final CheckBox checkBox;
         private final TextView reminderText;
+        private final ImageButton deleteBtn;
+        private final TextView pointsText;
         //private final ConstraintLayout layout;
 
         public TaskViewHolder(View view) {
             super(view);
-            name = view.findViewById(R.id.taskName);
+            name = view.findViewById(R.id.rewardText);
             //desc = view.findViewById(R.id.taskDesc);
             checkBox = view.findViewById(R.id.checkBox);
             reminderText = view.findViewById(R.id.reminderText);
+            deleteBtn = view.findViewById(R.id.deleteTaskBtn);
+            pointsText = view.findViewById(R.id.priceText);
+
             //layout = view.findViewById(R.id.taskContainer);
         }
 
@@ -77,6 +77,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             name.setText(item.getTaskName());
             // desc.setText(item.getTaskDesc());
             checkBox.setChecked(item.isDone);
+            Integer i = item.getTaskPoints();
+            pointsText.setText(i.toString());
+
 
 
             if (item.dueTime != 0) {
@@ -99,6 +102,13 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                     item.isDone = isChecked;
                     setCheckValue(item);
                     onTaskClickListener.onCheckBoxClick(item, v);
+                }
+            });
+
+            deleteBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onTaskClickListener.onDeleteTaskClick(item, v);
                 }
             });
 

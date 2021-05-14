@@ -15,7 +15,6 @@ public class RegisterActivity extends AppCompatActivity {
 
     private EditText userName;
     private EditText password;
-    private EditText email;
     private Button registerBtn;
 
     @Override
@@ -26,7 +25,6 @@ public class RegisterActivity extends AppCompatActivity {
 
         userName = findViewById(R.id.editTextNewUsername);
         password = findViewById(R.id.editTextNewPassword);
-        email = findViewById(R.id.editTextNewEmail);
         registerBtn = findViewById(R.id.buttonNewRegister);
 
 
@@ -35,9 +33,8 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String newUser = userName.getText().toString();
                 String newPassword = password.getText().toString();
-                String newEmail = email.getText().toString();
 
-                makeSharedPrefs(newUser, newPassword, newEmail);
+                makeSharedPrefs(newUser, newPassword);
 
                 Intent loginScreen = new Intent(RegisterActivity.this, LoginActivity.class);
                 startActivity(loginScreen);
@@ -45,7 +42,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    private void makeSharedPrefs(String newUser, String newPassword, String newEmail) {
+    private void makeSharedPrefs(String newUser, String newPassword) {
         SharedPreferences preferences = getSharedPreferences(Constants.MY_PREFS, MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(newUser + newPassword + "Id", newUser);

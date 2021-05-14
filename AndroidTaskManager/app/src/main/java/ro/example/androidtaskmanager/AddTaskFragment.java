@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -20,13 +19,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import java.util.Calendar;
 import java.util.List;
 
 import ro.example.androidtaskmanager.database.InsertTaskOperation;
-import ro.example.androidtaskmanager.database.UpdateTaskOperation;
 import ro.example.androidtaskmanager.interfaces.TaskOperations;
 import ro.example.androidtaskmanager.other.Task;
 
@@ -36,6 +33,7 @@ public class AddTaskFragment extends Fragment implements TaskOperations {
     private EditText newTaskText;
     private TimePicker timePicker;
     private CheckBox checkBox;
+    private EditText taskPoints;
 
 
     public AddTaskFragment() {
@@ -53,6 +51,12 @@ public class AddTaskFragment extends Fragment implements TaskOperations {
             @Override
             public void onClick(View v) {
                 String newTask = newTaskText.getText().toString();
+                String pointsText = taskPoints.getText().toString();
+                int points = 0;
+                if (!"".equals(pointsText)) {
+                    points = Integer.parseInt(pointsText);
+                }
+
                 long dueTime = 0;
                 if (!newTask.equals("")) {
                     //add new task with text
@@ -81,7 +85,7 @@ public class AddTaskFragment extends Fragment implements TaskOperations {
                         dueTime = alarmStartTime;
                     }
 
-                    addTask(newTask, dueTime);
+                    addTask(newTask, dueTime, points);
 
                 }
             }
@@ -101,9 +105,9 @@ public class AddTaskFragment extends Fragment implements TaskOperations {
         }
     }
 
-    private void addTask(String newTask, long dueTime) {
-        newTask = newTaskText.getText().toString();
-        Task task = new Task(newTask, "desc", false, dueTime);
+    private void addTask(String newTask, long dueTime, int points) {
+        //newTask = newTaskText.getText().toString();
+        Task task = new Task(newTask, "desc", false, dueTime, points);
         Task[] taskList = new Task[]{task};
         new InsertTaskOperation(this).execute(taskList);
 
@@ -115,9 +119,10 @@ public class AddTaskFragment extends Fragment implements TaskOperations {
 
     private void initializeFields(View view) {
         addButton = view.findViewById(R.id.newTaskButton);
-        newTaskText = view.findViewById(R.id.newTaskText);
+        newTaskText = view.findViewById(R.id.newRewardText);
         timePicker = view.findViewById(R.id.timePicker);
         checkBox = view.findViewById(R.id.checkBoxDueTime);
+        taskPoints = view.findViewById(R.id.taskPoints);
     }
 
     @Override
@@ -137,6 +142,11 @@ public class AddTaskFragment extends Fragment implements TaskOperations {
 
     @Override
     public void updateTasks(String result) {
+
+    }
+
+    @Override
+    public void deleteTasks(String result) {
 
     }
 }

@@ -6,4 +6,5 @@ import ro.example.androidtaskmanager.other.Task;
 
 public interface OnTaskClickListener {
     void onCheckBoxClick(Task task, View view);
+    void onDeleteTaskClick(Task task, View view);
 }

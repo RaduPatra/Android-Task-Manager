@@ -20,10 +20,8 @@ public interface TaskDao {
     void updateTasks(Task... tasks);//update(t1,t2..)
 
     @Delete
-    void delete(Task user);//delete(t1)
+    void deleteTasks(Task... tasks);
 
-    @Query("SELECT * FROM task WHERE task_id = :id")
-    Task getTaskById(int id);
 
     @Query("SELECT * FROM task")
     List<Task> getAll();
