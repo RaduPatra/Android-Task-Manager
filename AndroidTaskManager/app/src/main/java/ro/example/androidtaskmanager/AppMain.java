@@ -1,159 +1,83 @@
 package ro.example.androidtaskmanager;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Paint;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.fragment.app.Fragment;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 import ro.example.androidtaskmanager.utils.Constants;
 
-
-public class AppMain extends AppCompatActivity implements TaskOperations, OnTaskClickListener {
-
-    private Button logoutBtn;
-    private TextView displayInfo;
-    private EditText newTaskText;
-    private Button addTaskButton;
-    private RecyclerView recyclerView;
-    private TaskAdapter adapter;
-    public static List<Task> movieList = new ArrayList<>();
-
-
+public class AppMain extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.app_main);
 
-        initializeFields();
-        SharedPreferences preferences = getSharedPreferences(Constants.MY_PREFS, MODE_PRIVATE);
-        loadFromPrefs(preferences);
-        initTasks();
 
-        adapter = new TaskAdapter(movieList, this);
-        recyclerView.setAdapter(adapter);
+        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        bottomNav.setOnNavigationItemSelectedListener(navListener);
 
-
-
-
-        logoutBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.putString(Constants.SESSION_DATA, "");
-                editor.apply();
-                Intent registerScreen = new Intent(AppMain.this, LoginActivity.class);
-                startActivity(registerScreen);
-            }
-        });
-
-
-        addTaskButton.setOnClickListener(view ->
-                insertTasks()
-        );
-
-    }
-
-    private void initTasks() {
-
-        movieList.clear();
-        new GetAllTasksOperation(this).execute();
-        /*for (int i = 0;i<=10;i++){
-            Task task = new Task("name" + i, "desc");
-            movieList.add(task);
-        }*/
-    }
-
-    private void initializeFields() {
-        logoutBtn = findViewById(R.id.logoutButton);
-        displayInfo = findViewById(R.id.textViewName);
-
-        recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        newTaskText = findViewById(R.id.newTaskText);
-        addTaskButton = findViewById(R.id.addTaskButton);
-    }
-
-    private void loadFromPrefs(SharedPreferences preferences) {
-        String display = preferences.getString(Constants.SESSION_DATA, "");
-        displayInfo.setText(display);
-    }
-
-
-    public void insertTasks() {
-        /*Task task1 = new Task(
-                "task1",
-                "task1desc"
-        );*/
-        String newTask = newTaskText.getText().toString();
-        Task task = new Task(newTask, "desc", false);
-        movieList.add(task);
-        adapter.notifyDataSetChanged();
-        Task[] taskList = new Task[]{task};
-        new InsertTaskOperation(this).execute(taskList);
-
-    }
-
-
-    @Override
-    public void insertTasks(String result) {
-        if(result.equals("success"))
-            Toast.makeText(this, "Users inserted in the database sucessfully", Toast.LENGTH_LONG).show();
-        else
-            Toast.makeText(this, "Users inserted in the database failed", Toast.LENGTH_LONG).show();
-    }
-
-
-    @Override
-    public void findTask(Task task) {
-
-    }
-
-    @Override
-    public void getAllTasks(List<Task> tasks) {
-        if(tasks.size() != 0) {
-            Toast.makeText(this, tasks.get(0).taskName + " ! ", Toast.LENGTH_LONG).show();
-            //adapter.updateItems(tasks);
-            movieList.clear();
-            movieList.addAll(tasks);
-            adapter.notifyDataSetChanged();
+        if (savedInstanceState == null) {
+            Fragment selectedFragment = new TasksFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.flFragment,
+                    selectedFragment).commit();
         }
-        else
-            Toast.makeText(this, "fail", Toast.LENGTH_LONG).show();
+    }
+
+
+    private BottomNavigationView.OnNavigationItemSelectedListener navListener =
+            item -> {
+                Fragment selectedFragment = null;
+                switch (item.getItemId()) {
+                    case R.id.nav_home:
+                        selectedFragment = new TasksFragment();
+                        break;
+                    case R.id.nav_rewards:
+                        selectedFragment = new RewardsFragment();
+                        break;
+                }
+                getSupportFragmentManager().beginTransaction().replace(R.id.flFragment,
+                        selectedFragment).commit();
+                return true;
+            };
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.options_menu, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
-    public void updateTasks(String result) {
-        if(result.equals("success"))
-            Toast.makeText(this, "Users updated in the database sucessfully", Toast.LENGTH_LONG).show();
-        else
-            Toast.makeText(this, "Users updated in the database failed", Toast.LENGTH_LONG).show();
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.logoutOption:
+                logoutOption();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onCheckBoxClick(Task task, View view) {
-        CheckBox clickedCheck = view.findViewById(R.id.checkBox);
-        boolean isChecked = clickedCheck.isChecked();
-        Task[] taskList = new Task[]{task};
-        new UpdateTaskOperation(this).execute(taskList);
-        Log.d(task.toString(),"testupdate");
-        //update task with check
-        Toast.makeText(this, task.taskName + " check " + isChecked , Toast.LENGTH_LONG).show();
+    private void logoutOption() {
+        //clears displayed data prefs and go back to login
+       
+        SharedPreferences preferences = getSharedPreferences(Constants.MY_PREFS, MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(Constants.SESSION_DATA, "");
+        editor.apply();
+        Intent registerScreen = new Intent(getApplicationContext(), LoginActivity.class);
+        startActivity(registerScreen);
     }
 }

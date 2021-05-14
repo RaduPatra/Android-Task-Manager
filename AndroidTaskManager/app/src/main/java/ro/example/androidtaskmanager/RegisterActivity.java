@@ -46,7 +46,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void makeSharedPrefs(String newUser, String newPassword, String newEmail) {
-        SharedPreferences preferences = getSharedPreferences (Constants.MY_PREFS, MODE_PRIVATE) ;
+        SharedPreferences preferences = getSharedPreferences(Constants.MY_PREFS, MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(newUser + newPassword + "Id", newUser);
         editor.apply();
